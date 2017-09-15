@@ -3,7 +3,7 @@ function bindEvent (elem,type,selector,fn) {
     fn = selector;
     selector = null;
   }
-  elem.addEventListener(type,(e)=> {
+  elem.addEventListener(type,function(e) {
     if (selector) {
       const target = e.target;
       if (target.matches(selector)) {
@@ -15,7 +15,7 @@ function bindEvent (elem,type,selector,fn) {
   });
 }
 
-bindEvent(document,'DOMContentLoaded', ()=> {
+bindEvent(document,'DOMContentLoaded', function() {
   const form = document.getElementById('registrar');
   const input = form.querySelector('input');
 
@@ -33,26 +33,35 @@ bindEvent(document,'DOMContentLoaded', ()=> {
   mainDiv.insertBefore(div,ul);
 
   function createLi(text) {
+
+    function createElement (elemName,proName,value) {
+      const elem = document.createElement(elemName);
+      elem[proName] = value;
+      return elem;
+    }
+
+    function appendToLi (elemName,proName,value) {
+      const elem = createElement(elemName,proName,value);
+      li.appendChild(elem);
+      return elem
+    }
+
     const li = document.createElement('li');
-    const span = document.createElement('span');
-    span.textContent = text;
-    li.appendChild(span);
-    const label = document.createElement('label');
-    label.textContent = "Confirmed";
-    const checkbox = document.createElement('input');
-    checkbox.type = "checkbox";
-    label.appendChild(checkbox);
-    li.appendChild(label);
-    const editButton = document.createElement('button');
-    const removeButton = document.createElement('button');
-    editButton.textContent = "Edit";
-    removeButton.textContent = "Remove";
-    li.appendChild(editButton);
-    li.appendChild(removeButton);
+
+    appendToLi('span','textContent',text);
+
+    appendToLi('label','textContent','Confirmed')
+    .appendChild(createElement('input','type','checkbox'));
+
+    appendToLi('button','textContent','Edit');
+
+    appendToLi('button','textContent','Remove');
+
     return li;
+
   }
 
-  bindEvent(form,'submit',(e)=> {
+  bindEvent(form,'submit',function(e) {
     e.preventDefault();
     const text = input.value;
     input.value = "";
@@ -60,7 +69,7 @@ bindEvent(document,'DOMContentLoaded', ()=> {
     ul.appendChild(li);
   });
 
-  bindEvent(ul,'change','input',()=> {
+  bindEvent(ul,'change','input',function() {
     const listItem = this.parentNode.parentNode; //traverse
     if (this.checked) {
       listItem.className = "responded"
@@ -70,7 +79,7 @@ bindEvent(document,'DOMContentLoaded', ()=> {
   });
 
 
-  bindEvent(ul,'click','button',function () {
+  bindEvent(ul,'click','button',function() {
     const listItem = this.parentNode;
     if (this.textContent === "Remove") {
       ul.removeChild(listItem);
@@ -92,7 +101,7 @@ bindEvent(document,'DOMContentLoaded', ()=> {
     }
   });
 
-  bindEvent(filterCheckbox,'change',(e)=> {
+  bindEvent(filterCheckbox,'change',function(e) {
     const isChecked = e.target.checked;
     const listItem = ul.children;
     if (isChecked) {
