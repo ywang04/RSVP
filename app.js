@@ -81,31 +81,39 @@ bindEvent(document,'DOMContentLoaded', function() {
 
   bindEvent(ul,'click','button',function() {
     const listItem = this.parentNode;
-    if (this.textContent === "Remove") {
-      ul.removeChild(listItem);
-    } else if (this.textContent === "Edit") {
-         const span = listItem.firstElementChild;
-         const input = document.createElement('input');
-         input.type = 'text';
-         input.value = span.textContent;
-         listItem.insertBefore(input,span);
-         listItem.removeChild(span);
-         this.textContent = "Save";
-    } else if (this.textContent === "Save") {
+    const action = this.textContent;
+    const nameActions = {
+      Remove: ()=> {
+        ul.removeChild(listItem);
+      },
+
+      Edit: ()=> {
+        const span = listItem.firstElementChild;
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = span.textContent;
+        listItem.insertBefore(input,span)
+        listItem.removeChild(span);
+        this.textContent = "Save";
+      },
+
+      Save: ()=> {
         const input = listItem.firstElementChild;
         const span = document.createElement('span');
         span.textContent = input.value;
         listItem.insertBefore(span,input);
         listItem.removeChild(input);
         this.textContent = "Edit";
-    }
+      }
+    };
+    nameActions[action]();
   });
+
 
   bindEvent(filterCheckbox,'change',function(e) {
     const isChecked = e.target.checked;
     const listItem = ul.children;
     if (isChecked) {
-      // const listItem = document.querySelectorAll('li');
       for (let i = 0; i < listItem.length; i++) {
         if (listItem[i].className === "") {
           listItem[i].style.display = "none";
