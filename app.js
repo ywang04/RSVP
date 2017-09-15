@@ -64,9 +64,13 @@ bindEvent(document,'DOMContentLoaded', function() {
   bindEvent(form,'submit',function(e) {
     e.preventDefault();
     const text = input.value;
-    input.value = "";
-    const li = createLi(text);
-    ul.appendChild(li);
+    if (!text) {
+      alert("Please enter your name.");
+    } else {
+      input.value = "";
+      const li = createLi(text);
+      ul.appendChild(li);
+    }
   });
 
   bindEvent(ul,'change','input',function() {
