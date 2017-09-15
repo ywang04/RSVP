@@ -34,6 +34,7 @@ bindEvent(document,'DOMContentLoaded', function() {
 
   function createLi(text) {
     const li = document.createElement('li');
+
     function createElement (elemName,proName,value) {
       const elem = document.createElement(elemName);
       elem[proName] = value;
@@ -80,7 +81,6 @@ bindEvent(document,'DOMContentLoaded', function() {
     }
   });
 
-
   bindEvent(ul,'click','button',function() {
     const listItem = this.parentNode;
     const action = this.textContent;
@@ -117,16 +117,20 @@ bindEvent(document,'DOMContentLoaded', function() {
     const listItem = ul.children;
     if (isChecked) {
       for (let i = 0; i < listItem.length; i++) {
-        if (listItem[i].className === "") {
+        if (!listItem[i].className) {
           listItem[i].style.display = "none";
         } else {
-          listItem[i].style.display = "";
+          const checkbox = listItem[i].querySelector('input');
+          checkbox.style.display = "none";
         }
       }
     } else {
       for (let i = 0; i < listItem.length; i ++) {
-        if (listItem[i].className === "") {
+        if (!listItem[i].className) {
           listItem[i].style.display = "" ;
+        } else {
+          const checkbox = listItem[i].querySelector('input');
+          checkbox.style.display = "";
         }
       }
     }
