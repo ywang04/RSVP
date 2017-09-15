@@ -33,7 +33,7 @@ bindEvent(document,'DOMContentLoaded', function() {
   mainDiv.insertBefore(div,ul);
 
   function createLi(text) {
-
+    const li = document.createElement('li');
     function createElement (elemName,proName,value) {
       const elem = document.createElement(elemName);
       elem[proName] = value;
@@ -45,8 +45,6 @@ bindEvent(document,'DOMContentLoaded', function() {
       li.appendChild(elem);
       return elem
     }
-
-    const li = document.createElement('li');
 
     appendToLi('span','textContent',text);
 
