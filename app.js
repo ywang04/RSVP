@@ -22,24 +22,22 @@ bindEvent(document,'DOMContentLoaded', function() {
   const mainDiv = document.querySelector('.main');
   const ul = document.getElementById('invitedList');
 
-  const div = document.createElement('div');
-  const filterLabel = document.createElement('label');
-  const filterCheckbox = document.createElement('input');
+  const div = createElement('div');
+  const filterLabel = createElement("label","textContent", "Hide those who haven't responded");
+  const filterCheckbox = createElement('input','type','checkbox');
 
-  filterCheckbox.type = "checkbox";
-  filterLabel.textContent = "Hide those who haven't responded";
   filterLabel.appendChild(filterCheckbox);
   div.appendChild(filterLabel);
   mainDiv.insertBefore(div,ul);
 
+  function createElement (elemName,proName,value) {
+    const elem = document.createElement(elemName);
+    elem[proName] = value;
+    return elem;
+  }
+
   function createLi(text) {
     const li = document.createElement('li');
-
-    function createElement (elemName,proName,value) {
-      const elem = document.createElement(elemName);
-      elem[proName] = value;
-      return elem;
-    }
 
     function appendToLi (elemName,proName,value) {
       const elem = createElement(elemName,proName,value);
