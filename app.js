@@ -111,28 +111,32 @@ bindEvent(document,'DOMContentLoaded', function() {
     nameActions[action]();
   });
 
-
-  bindEvent(filterCheckbox,'change',function(e) {
-    const isChecked = e.target.checked;
-    const listItem = ul.children;
+const bindEventFilter = function() {
+  log("Start to Event Filter")
+  const filterCheckbox = document.querySelector('.respond')
+  bindEvent(filterCheckbox,'change',function(event) {
+    log("Start to filter")
+    const ul = document.querySelector('#invitedList')
+    const listItem = ul.children
+    const isChecked = event.target.checked
     if (isChecked) {
       for (let i = 0; i < listItem.length; i++) {
-        if (!listItem[i].className) {
-          listItem[i].style.display = "none";
+        if (listItem[i].className) {
+          const checkbox = listItem[i].querySelector('input')
+          checkbox.style.display = "none"
         } else {
-          const checkbox = listItem[i].querySelector('input');
-          checkbox.style.display = "none";
+            listItem[i].style.display = "none"
         }
       }
     } else {
       for (let i = 0; i < listItem.length; i ++) {
-        if (!listItem[i].className) {
-          listItem[i].style.display = "" ;
+        if (listItem[i].className) {
+          const checkbox = listItem[i].querySelector('input')
+          checkbox.style.display = ""
         } else {
-          const checkbox = listItem[i].querySelector('input');
-          checkbox.style.display = "";
+            listItem[i].style.display = ""
         }
       }
     }
-  });
-});
+  })
+}
