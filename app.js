@@ -1,16 +1,18 @@
-function bindEvent (elem,type,selector,fn) {
+// bindEvent
+const bindEvent = function(elem,eventType,selector,fn) {
   if (fn == null) {
     fn = selector;
     selector = null;
   }
-  elem.addEventListener(type,function(e) {
+  elem.addEventListener(eventType,function(event) {
+    //use event delegation
     if (selector) {
-      const target = e.target;
+      const target = event.target;
       if (target.matches(selector)) {
-        fn.call(target,e);
+        fn.call(target,event);
       }
     } else {
-      fn(e);
+      fn(event);
     }
   });
 }
