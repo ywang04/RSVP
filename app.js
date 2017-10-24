@@ -81,35 +81,38 @@ bindEvent(document,'DOMContentLoaded', function() {
     }
   });
 
+const bindEventChange = function() {
+  const ul = document.querySelector('#invitedList')
   bindEvent(ul,'click','button',function() {
-    const listItem = this.parentNode;
-    const action = this.textContent;
+    log('Start to change', this)
+    const listItem = this.parentNode
+    const action = this.textContent
     const nameActions = {
       Remove: ()=> {
-        ul.removeChild(listItem);
+        listItem.remove()
       },
 
       Edit: ()=> {
-        const span = listItem.firstElementChild;
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.value = span.textContent;
-        listItem.insertBefore(input,span)
-        listItem.removeChild(span);
-        this.textContent = "Save";
+        const span = listItem.firstElementChild
+        const name = span.textContent
+        span.insertAdjacentHTML('beforebegin', `
+          <input type='text' value=${name}>`)
+        span.remove()
+        this.textContent = 'Save'
       },
 
       Save: ()=> {
-        const input = listItem.firstElementChild;
-        const span = document.createElement('span');
-        span.textContent = input.value;
-        listItem.insertBefore(span,input);
-        listItem.removeChild(input);
-        this.textContent = "Edit";
+        const input = listItem.firstElementChild
+        const name = input.value
+        input.insertAdjacentHTML('beforebegin', `
+          <span>${name}</span>`)
+        input.remove()
+        this.textContent = 'Edit'
       }
-    };
-    nameActions[action]();
-  });
+    }
+    nameActions[action]()
+  })
+}
 
 const bindEventFilter = function() {
   log("Start to Event Filter")
