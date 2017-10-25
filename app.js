@@ -86,6 +86,30 @@ const bindEventChange = function() {
   })
 }
 
+// Click checkbox to confirm
+const bindEventConfirm = function() {
+  log('Start to Confirm')
+  const ul = document.querySelector('#invitedList')
+  bindEvent(ul,'change','input',function() {
+    if (this.className === 'confirm') {
+      log("This is listItem",this.className)
+      const listItem = this.parentNode.parentNode
+      var index = indexOfElement(listItem)
+      if (this.checked) {
+        listItem.className = "responded"
+        rsvpLists[index].confirmed = true
+        log(rsvpLists[index], index)
+        saveLists()
+      } else {
+        listItem.className = ""
+        rsvpLists[index].confirmed = false
+        log(rsvpLists[index], index)
+        saveLists()
+      }
+    }
+  })
+}
+
 
 bindEvent(document,'DOMContentLoaded', function() {
   const form = document.getElementById('registrar');
