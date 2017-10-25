@@ -1,3 +1,6 @@
+// Create rsvplists for localStorage
+let rsvpLists = []
+
 // bindEvent
 const bindEvent = function(elem,eventType,selector,fn) {
   if (fn == null) {
