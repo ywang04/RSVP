@@ -48,6 +48,45 @@ const bindEventAdd = function() {
   })
 }
 
+// Click Edit/Save/Remove button to modify name
+const bindEventChange = function() {
+  const ul = document.querySelector('#invitedList')
+  bindEvent(ul,'click','button',function() {
+    const listItem = this.parentNode
+    const action = this.textContent
+    const index = indexOfElement(listItem)
+    const nameActions = {
+      Remove: ()=> {
+        listItem.remove()
+        rsvpLists.splice(index, 1)
+        saveLists()
+      },
+
+      Edit: ()=> {
+        const span = listItem.firstElementChild
+        const name = span.textContent
+        span.insertAdjacentHTML('beforebegin', `
+          <input type='text' value=${name}>`)
+        span.remove()
+        this.textContent = 'Save'
+      },
+
+      Save: ()=> {
+        const input = listItem.firstElementChild
+        const name = input.value
+        input.insertAdjacentHTML('beforebegin', `
+          <span>${name}</span>`)
+        input.remove()
+        this.textContent = 'Edit'
+        rsvpLists[index].name = name
+        saveLists()
+      }
+    }
+    nameActions[action]()
+  })
+}
+
+
 bindEvent(document,'DOMContentLoaded', function() {
   const form = document.getElementById('registrar');
   const input = form.querySelector('input');
