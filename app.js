@@ -9,20 +9,43 @@ const log = function() {
 // bindEvent
 const bindEvent = function(elem,eventType,selector,fn) {
   if (fn == null) {
-    fn = selector;
-    selector = null;
+    fn = selector
+    selector = null
   }
   elem.addEventListener(eventType,function(event) {
     //use event delegation
     if (selector) {
-      const target = event.target;
+      const target = event.target
       if (target.matches(selector)) {
-        fn.call(target,event);
+        fn.call(target,event)
       }
     } else {
-      fn(event);
+      fn(event)
     }
-  });
+  })
+}
+
+// Click Add button to add name
+const bindEventAdd = function() {
+  log('bindEventAdd')
+  const form = document.querySelector('#registrar')
+  const inputForm = form.querySelector('input')
+  bindEvent(form,'submit',function(event) {
+    event.preventDefault()
+    let name = inputForm.value
+    if (name) {
+      const rsvp = {
+        name: name,
+        confirmed: false
+      }
+      inputForm.value = ''
+      insertList(rsvp)
+      rsvpLists.push(rsvp)
+    } else {
+      alert("Please enter your name.")
+    }
+    saveLists()
+  })
 }
 
 bindEvent(document,'DOMContentLoaded', function() {
