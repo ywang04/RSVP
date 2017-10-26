@@ -110,6 +110,35 @@ const bindEventConfirm = function() {
   })
 }
 
+// Click filter to filter confirm status
+const bindEventFilter = function() {
+  const filterCheckbox = document.querySelector('.respond')
+  bindEvent(filterCheckbox,'change',function(event) {
+    log("Start to filter")
+    const ul = document.querySelector('#invitedList')
+    const listItem = ul.children
+    const isChecked = event.target.checked
+    if (isChecked) {
+      for (let i = 0; i < listItem.length; i++) {
+        if (listItem[i].className) {
+          const checkbox = listItem[i].querySelector('input')
+          checkbox.style.display = "none"
+        } else {
+            listItem[i].style.display = "none"
+        }
+      }
+    } else {
+      for (let i = 0; i < listItem.length; i ++) {
+        if (listItem[i].className) {
+          const checkbox = listItem[i].querySelector('input')
+          checkbox.style.display = ""
+        } else {
+            listItem[i].style.display = ""
+        }
+      }
+    }
+  })
+}
 
 bindEvent(document,'DOMContentLoaded', function() {
   const form = document.getElementById('registrar');
