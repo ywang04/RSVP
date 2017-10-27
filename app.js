@@ -140,6 +140,25 @@ const bindEventFilter = function() {
   })
 }
 
+// insert list to ul
+const insertList = function(rsvp) {
+  log("Start to insert list")
+  const ulContainer = document.querySelector('#invitedList')
+  const t = templateLists(rsvp)
+  ulContainer.insertAdjacentHTML('beforeend', t)
+}
+
+// templates of label
+const templateLabel = function() {
+  let t = `
+  <div>
+  <label>Hide those who haven't responded<input class="respond" type="checkbox">
+  </label>
+  </div>
+  `
+  return t
+}
+
 bindEvent(document,'DOMContentLoaded', function() {
   const form = document.getElementById('registrar');
   const input = form.querySelector('input');
