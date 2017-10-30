@@ -1,4 +1,4 @@
-// Create rsvplists for localStorage
+// create rsvplists for localStorage
 let rsvpLists = []
 
 // log function
@@ -25,7 +25,7 @@ const bindEvent = function(elem,eventType,selector,fn) {
   })
 }
 
-// Click Add button to add name
+// click Add button to add name
 const bindEventAdd = function() {
   log('bindEventAdd')
   const form = document.querySelector('#registrar')
@@ -48,7 +48,7 @@ const bindEventAdd = function() {
   })
 }
 
-// Click Edit/Save/Remove button to modify name
+// click Edit/Save/Remove button to modify name
 const bindEventChange = function() {
   const ul = document.querySelector('#invitedList')
   bindEvent(ul,'click','button',function() {
@@ -86,7 +86,7 @@ const bindEventChange = function() {
   })
 }
 
-// Click checkbox to confirm
+// click checkbox to confirm
 const bindEventConfirm = function() {
   log('Start to Confirm')
   const ul = document.querySelector('#invitedList')
@@ -94,7 +94,7 @@ const bindEventConfirm = function() {
     if (this.className === 'confirm') {
       log("This is listItem",this.className)
       const listItem = this.parentNode.parentNode
-      var index = indexOfElement(listItem)
+      const index = indexOfElement(listItem)
       if (this.checked) {
         listItem.className = "responded"
         rsvpLists[index].confirmed = true
@@ -110,7 +110,7 @@ const bindEventConfirm = function() {
   })
 }
 
-// Click filter to filter confirm status
+// click filter to filter confirm status
 const bindEventFilter = function() {
   const filterCheckbox = document.querySelector('.respond')
   bindEvent(filterCheckbox,'change',function(event) {
@@ -201,5 +201,17 @@ const indexOfElement = function(elem) {
       return i
     }
   }
+}
+
+// save lists to localStorage
+const saveLists = function() {
+  const r = JSON.stringify(rsvpLists)
+  localStorage.rsvpLists = r
+}
+
+// load lists from localStorage
+const loadLists = function() {
+  const r = localStorage.rsvpLists
+  return JSON.parse(r)
 }
 
