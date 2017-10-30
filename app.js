@@ -177,6 +177,14 @@ const templateLists = function(rsvp) {
   }
 }
 
+// insert label to mainDiv
+const insertLable = function() {
+  log("Start to insert")
+  const header = document.querySelector('.title');
+  const t = templateLabel()
+  header.insertAdjacentHTML("afterend",t)
+}
+
 // insert list to ul
 const insertList = function(rsvp) {
   log("Start to insert list")
