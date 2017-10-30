@@ -12,7 +12,7 @@ const bindEvent = function(elem,eventType,selector,fn) {
     fn = selector
     selector = null
   }
-  elem.addEventListener(eventType,function(event){
+  elem.addEventListener(eventType,function(event) {
     //use event delegation
     if (selector) {
       const target = event.target
@@ -124,7 +124,7 @@ const bindEventFilter = function() {
           const checkbox = listItem[i].querySelector('input')
           checkbox.style.display = "none"
         } else {
-            listItem[i].style.display = "none"
+          listItem[i].style.display = "none"
         }
       }
     } else {
@@ -133,7 +133,7 @@ const bindEventFilter = function() {
           const checkbox = listItem[i].querySelector('input')
           checkbox.style.display = ""
         } else {
-            listItem[i].style.display = ""
+          listItem[i].style.display = ""
         }
       }
     }
@@ -203,39 +203,129 @@ const indexOfElement = function(elem) {
   }
 }
 
-// Save lists to localStorage
-const saveLists = function() {
-  var r = JSON.stringify(rsvpLists)
-  localStorage.rsvpLists = r
-}
+bindEvent(document,'DOMContentLoaded', function() {
+  const form = document.getElementById('registrar');
+  const input = form.querySelector('input');
 
-// load lists from localStorage
-const loadLists = function() {
-  var r = localStorage.rsvpLists
-  return JSON.parse(r)
-}
+  const mainDiv = document.querySelector('.main');
+  const ul = document.getElementById('invitedList');
 
-// initial lists
-const initLists = function() {
-  rsvpLists = loadLists()
-  for (let i = 0; i < rsvpLists.length; i++) {
-    let list = rsvpLists[i]
-    insertList(list)
+  const div = createElement('div');
+  const filterLabel = createElement("label","textContent", "Hide those who haven't responded");
+  const filterCheckbox = createElement('input','type','checkbox');
+
+  filterLabel.appendChild(filterCheckbox);
+  div.appendChild(filterLabel);
+  mainDiv.insertBefore(div,ul);
+
+  function createElement (elemName,proName,value) {
+    const elem = document.createElement(elemName);
+    elem[proName] = value;
+    return elem;
   }
-}
 
-const bindEvents = function() {
-  bindEventAdd()
-  bindEventChange()
-  bindEventConfirm()
-  bindEventFilter()
-}
+  function createLi(text) {
+    const li = document.createElement('li');
 
-const __main = function() {
-  log("Main to start")
-  insertLable()
-  bindEvents()
-  initLists()
-}
+    function appendToLi (elemName,proName,value) {
+      const elem = createElement(elemName,proName,value);
+      li.appendChild(elem);
+      return elem
+    }
 
-__main()
+    appendToLi('span','textContent',text);
+
+    appendToLi('label','textContent','Confirmed')
+        .appendChild(createElement('input','type','checkbox'));
+
+    appendToLi('button','textContent','Edit');
+
+    appendToLi('button','textContent','Remove');
+
+    return li;
+
+  }
+
+  bindEvent(form,'submit',function(e) {
+    e.preventDefault();
+    const text = input.value;
+    if (!text) {
+      alert("Please enter your name.");
+    } else {
+      input.value = "";
+      const li = createLi(text);
+      ul.appendChild(li);
+    }
+  });
+
+  bindEvent(ul,'change','input',function() {
+    const listItem = this.parentNode.parentNode; //traverse
+    if (this.checked) {
+      listItem.className = "responded"
+    } else {
+      listItem.className = "";
+    }
+  });
+
+  const bindEventChange = function() {
+    const ul = document.querySelector('#invitedList')
+    bindEvent(ul,'click','button',function() {
+      log('Start to change', this)
+      const listItem = this.parentNode
+      const action = this.textContent
+      const nameActions = {
+        Remove: ()=> {
+          listItem.remove()
+        },
+
+        Edit: ()=> {
+          const span = listItem.firstElementChild
+          const name = span.textContent
+          span.insertAdjacentHTML('beforebegin', `
+          <input type='text' value=${name}>`)
+          span.remove()
+          this.textContent = 'Save'
+        },
+
+        Save: ()=> {
+          const input = listItem.firstElementChild
+          const name = input.value
+          input.insertAdjacentHTML('beforebegin', `
+          <span>${name}</span>`)
+          input.remove()
+          this.textContent = 'Edit'
+        }
+      }
+      nameActions[action]()
+    })
+  }
+
+  const bindEventFilter = function() {
+    log("Start to Event Filter")
+    const filterCheckbox = document.querySelector('.respond')
+    bindEvent(filterCheckbox,'change',function(event) {
+      log("Start to filter")
+      const ul = document.querySelector('#invitedList')
+      const listItem = ul.children
+      const isChecked = event.target.checked
+      if (isChecked) {
+        for (let i = 0; i < listItem.length; i++) {
+          if (listItem[i].className) {
+            const checkbox = listItem[i].querySelector('input')
+            checkbox.style.display = "none"
+          } else {
+            listItem[i].style.display = "none"
+          }
+        }
+      } else {
+        for (let i = 0; i < listItem.length; i ++) {
+          if (listItem[i].className) {
+            const checkbox = listItem[i].querySelector('input')
+            checkbox.style.display = ""
+          } else {
+            listItem[i].style.display = ""
+          }
+        }
+      }
+    })
+  }
