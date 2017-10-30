@@ -193,6 +193,16 @@ const insertList = function(rsvp) {
   ulContainer.insertAdjacentHTML('beforeend', t)
 }
 
+// return index of element
+const indexOfElement = function(elem) {
+  const parent = elem.parentElement
+  for (let i = 0; i < parent.children.length; i++) {
+    if (parent.children[i] === elem) {
+      return i
+    }
+  }
+}
+
 bindEvent(document,'DOMContentLoaded', function() {
   const form = document.getElementById('registrar');
   const input = form.querySelector('input');
