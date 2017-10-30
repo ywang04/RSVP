@@ -140,14 +140,6 @@ const bindEventFilter = function() {
   })
 }
 
-// insert list to ul
-const insertList = function(rsvp) {
-  log("Start to insert list")
-  const ulContainer = document.querySelector('#invitedList')
-  const t = templateLists(rsvp)
-  ulContainer.insertAdjacentHTML('beforeend', t)
-}
-
 // templates of label
 const templateLabel = function() {
   let t = `
@@ -157,6 +149,40 @@ const templateLabel = function() {
   </div>
   `
   return t
+}
+
+// templates of list
+const templateLists = function(rsvp) {
+  log("Start to templateLists")
+  if (rsvp.confirmed) {
+    const t = `
+      <li class="responded">
+        <span>${rsvp.name}</span>
+        <label>Confirmed<input class="confirm" type="checkbox" checked=""></label>
+        <button>Edit</button>
+        <button>Remove</button>
+      </li>
+    `
+    return t
+  } else {
+    const t = `
+      <li>
+        <span>${rsvp.name}</span>
+        <label>Confirmed<input class="confirm" type="checkbox"></label>
+        <button>Edit</button>
+        <button>Remove</button>
+      </li>
+    `
+    return t
+  }
+}
+
+// insert list to ul
+const insertList = function(rsvp) {
+  log("Start to insert list")
+  const ulContainer = document.querySelector('#invitedList')
+  const t = templateLists(rsvp)
+  ulContainer.insertAdjacentHTML('beforeend', t)
 }
 
 bindEvent(document,'DOMContentLoaded', function() {
