@@ -215,3 +215,27 @@ const loadLists = function() {
   return JSON.parse(r)
 }
 
+// initial lists
+const initLists = function() {
+  rsvpLists = loadLists()
+  for (let i = 0; i < rsvpLists.length; i++) {
+    let list = rsvpLists[i]
+    insertList(list)
+  }
+}
+
+const bindEvents = function() {
+  bindEventAdd()
+  bindEventChange()
+  bindEventConfirm()
+  bindEventFilter()
+}
+
+const __main = function() {
+  log("Main to start")
+  insertLable()
+  bindEvents()
+  initLists()
+}
+
+__main()
