@@ -6,6 +6,11 @@ const log = function() {
   console.log.apply(console, arguments)
 }
 
+// use function e replace document.querySelector
+const e = function(selector) {
+  return document.querySelector(selector)
+}
+
 // bindEvent
 const bindEvent = function(elem,eventType,selector,fn) {
   if (fn == null) {
@@ -28,7 +33,7 @@ const bindEvent = function(elem,eventType,selector,fn) {
 // click Add button to add name
 const bindEventAdd = function() {
   log('bindEventAdd')
-  const form = document.querySelector('#registrar')
+  const form = e('#registrar')
   const inputForm = form.querySelector('input')
   bindEvent(form,'submit',function(event) {
     event.preventDefault()
@@ -50,7 +55,7 @@ const bindEventAdd = function() {
 
 // click Edit/Save/Remove button to modify name
 const bindEventChange = function() {
-  const ul = document.querySelector('#invitedList')
+  const ul = e('#invitedList')
   bindEvent(ul,'click','button',function() {
     const listItem = this.parentNode
     const action = this.textContent
@@ -89,7 +94,7 @@ const bindEventChange = function() {
 // click checkbox to confirm
 const bindEventConfirm = function() {
   log('Start to Confirm')
-  const ul = document.querySelector('#invitedList')
+  const ul = e('#invitedList')
   bindEvent(ul,'change','input',function() {
     if (this.className === 'confirm') {
       log("This is listItem",this.className)
@@ -112,10 +117,10 @@ const bindEventConfirm = function() {
 
 // click filter to filter confirm status
 const bindEventFilter = function() {
-  const filterCheckbox = document.querySelector('.respond')
+  const filterCheckbox = e('.respond')
   bindEvent(filterCheckbox,'change',function(event) {
     log("Start to filter")
-    const ul = document.querySelector('#invitedList')
+    const ul = e('#invitedList')
     const listItem = ul.children
     const isChecked = event.target.checked
     if (isChecked) {
@@ -180,7 +185,7 @@ const templateLists = function(rsvp) {
 // insert label to mainDiv
 const insertLable = function() {
   log("Start to insert")
-  const header = document.querySelector('.title');
+  const header = e('.title');
   const t = templateLabel()
   header.insertAdjacentHTML("afterend",t)
 }
@@ -188,7 +193,7 @@ const insertLable = function() {
 // insert list to ul
 const insertList = function(rsvp) {
   log("Start to insert list")
-  const ulContainer = document.querySelector('#invitedList')
+  const ulContainer = e('#invitedList')
   const t = templateLists(rsvp)
   ulContainer.insertAdjacentHTML('beforeend', t)
 }
