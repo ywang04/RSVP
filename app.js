@@ -209,15 +209,21 @@ const indexOfElement = function(elem) {
 }
 
 // save lists to localStorage
-const saveLists = function() {
-  const r = JSON.stringify(rsvpLists)
+const save = function(rsvp) {
+  const r = JSON.stringify(rsvp)
   localStorage.rsvpLists = r
 }
 
 // load lists from localStorage
-const loadLists = function() {
+const load = function() {
   const r = localStorage.rsvpLists
   return JSON.parse(r)
+}
+
+const saveLists = function() {
+}
+
+const loadLists = function() {
 }
 
 // initial lists
