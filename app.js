@@ -8,7 +8,7 @@ const e = function(selector) {
   return document.querySelector(selector)
 }
 
-// bindEvent
+// generic bindEvent
 const bindEvent = function(elem,eventType,selector,fn) {
   if (fn == null) {
     fn = selector
@@ -30,19 +30,19 @@ const bindEvent = function(elem,eventType,selector,fn) {
 // click Add button to add name
 const bindEventAdd = function() {
   log('bindEventAdd')
-  const form = e('#registrar')
+  const form = e('#id-form-registrar')
   const inputForm = form.querySelector('input')
-  bindEvent(form,'submit',function(event) {
+  bindEvent(form,'submit',function(event){
     event.preventDefault()
     let name = inputForm.value
     if (name) {
-      const rsvp = {
-        name: name,
-        confirmed: false
-      }
+      // const rsvp = {
+      //   name: name,
+      //   confirmed: false
+      // }
       inputForm.value = ''
-      insertList(rsvp)
-      rsvpLists.push(rsvp)
+      insertList(name)
+      // rsvpLists.push(rsvp)
     } else {
       alert("Please enter your name.")
     }
@@ -52,7 +52,7 @@ const bindEventAdd = function() {
 
 // click Edit/Save/Remove button to modify name
 const bindEventChange = function() {
-  const ul = e('#invitedList')
+  const ul = e('#')
   bindEvent(ul,'click','button',function() {
     const listItem = this.parentNode
     const action = this.textContent
@@ -91,7 +91,7 @@ const bindEventChange = function() {
 // click checkbox to confirm
 const bindEventConfirm = function() {
   log('Start to Confirm')
-  const ul = e('#invitedList')
+  const ul = e('#id-ul-invitedList')
   bindEvent(ul,'change','input',function() {
     if (this.className === 'confirm') {
       log("This is listItem",this.className)
@@ -117,7 +117,7 @@ const bindEventFilter = function() {
   const filterCheckbox = e('.respond')
   bindEvent(filterCheckbox,'change',function(event) {
     log("Start to filter")
-    const ul = e('#invitedList')
+    const ul = e('#id-ul-invitedList')
     const listItem = ul.children
     const isChecked = event.target.checked
     if (isChecked) {
@@ -154,44 +154,32 @@ const templateLabel = function() {
 }
 
 // templates of list
-const templateLists = function(rsvp) {
+const templateLists = function(name) {
   log("Start to templateLists")
-  if (rsvp.confirmed) {
-    const t = `
-          <li class="responded">
-            <span>${rsvp.name}</span>
-            <label>Confirmed<input class="confirm" type="checkbox" checked=""></label>
-            <button>Edit</button>
-            <button>Remove</button>
-          </li>
-    `
-    return t
-  } else {
-    const t = `
-          <li>
-            <span>${rsvp.name}</span>
-            <label>Confirmed<input class="confirm" type="checkbox"></label>
-            <button>Edit</button>
-            <button>Remove</button>
-          </li>
-    `
-    return t
-  }
+  const t = `
+        <li class="responded">
+          <span class='rsvp-name'>${name}</span>
+          <label>Confirmed<input class="confirm" type="checkbox" checked=""></label>
+          <button>Edit</button>
+          <button>Remove</button>
+        </li>
+  `
+  return t
 }
 
 // insert label to mainDiv
 const insertLable = function() {
-  log("Start to insert")
+  log("Start to insert label")
   const header = e('.title');
   const t = templateLabel()
   header.insertAdjacentHTML("afterend",t)
 }
 
 // insert list to ul
-const insertList = function(rsvp) {
+const insertList = function(name) {
   log("Start to insert list")
-  const ulContainer = e('#invitedList')
-  const t = templateLists(rsvp)
+  const ulContainer = e('#id-ul-invitedList')
+  const t = templateLists(name)
   ulContainer.insertAdjacentHTML('beforeend', t)
 }
 
@@ -205,32 +193,42 @@ const indexOfElement = function(elem) {
   }
 }
 
-// save lists to localStorage
-const save = function(rsvp) {
-  const r = JSON.stringify(rsvp)
+// serialize array to string
+const save = function(array) {
+  const r = JSON.stringify(array)
   localStorage.rsvpLists = r
 }
 
-// load lists from localStorage
+// unserialize string to array
 const load = function() {
   const r = localStorage.rsvpLists
   return JSON.parse(r)
 }
 
+// save rsvplists to localStorage
 const saveLists = function() {
+  log('saveLists')
+  const rsvp = []
+  const names = document.querySelectorAll('.rsvp-name');
+  log(names)
+  for (let i = 0; i < names.length; i++) {
+    let name = names[i].innerHTML
+    rsvp.push(name)
+  }
+  save(rsvp)
 }
 
 const loadLists = function() {
 }
 
 // initial lists
-const initLists = function() {
-  rsvpLists = loadLists()
-  for (let i = 0; i < rsvpLists.length; i++) {
-    let list = rsvpLists[i]
-    insertList(list)
-  }
-}
+// const initLists = function() {
+//   rsvpLists = loadLists()
+//   for (let i = 0; i < rsvpLists.length; i++) {
+//     let list = rsvpLists[i]
+//     insertList(list)
+//   }
+// }
 
 const bindEvents = function() {
   bindEventAdd()
@@ -243,7 +241,7 @@ const __main = function() {
   log("Main to start")
   insertLable()
   bindEvents()
-  initLists()
+  // initLists()
 }
 
 __main()
