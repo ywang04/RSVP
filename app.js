@@ -1,6 +1,3 @@
-// create rsvplists for localStorage
-let rsvpLists = []
-
 // log function
 const log = function() {
   console.log.apply(console, arguments)
