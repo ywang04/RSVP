@@ -30,7 +30,7 @@ const bindEvent = function(elem,eventType,selector,fn) {
 // click Add button to add name
 const bindEventAdd = function() {
   log('bindEventAdd')
-  const form = e('#registrar')
+  const form = e('#id-form-registrar')
   const inputForm = form.querySelector('input')
   bindEvent(form,'submit',function(event) {
     event.preventDefault()
@@ -52,7 +52,7 @@ const bindEventAdd = function() {
 
 // click Edit/Save/Remove button to modify name
 const bindEventChange = function() {
-  const ul = e('#invitedList')
+  const ul = e('#id-ul-invitedList')
   bindEvent(ul,'click','button',function() {
     const listItem = this.parentNode
     const action = this.textContent
@@ -91,7 +91,7 @@ const bindEventChange = function() {
 // click checkbox to confirm
 const bindEventConfirm = function() {
   log('Start to Confirm')
-  const ul = e('#invitedList')
+  const ul = e('#id-ul-invitedList')
   bindEvent(ul,'change','input',function() {
     if (this.className === 'confirm') {
       log("This is listItem",this.className)
@@ -117,7 +117,7 @@ const bindEventFilter = function() {
   const filterCheckbox = e('.respond')
   bindEvent(filterCheckbox,'change',function(event) {
     log("Start to filter")
-    const ul = e('#invitedList')
+    const ul = e('#id-ul-invitedList')
     const listItem = ul.children
     const isChecked = event.target.checked
     if (isChecked) {
@@ -190,7 +190,7 @@ const insertLable = function() {
 // insert list to ul
 const insertList = function(rsvp) {
   log("Start to insert list")
-  const ulContainer = e('#invitedList')
+  const ulContainer = e('#id-ul-invitedList')
   const t = templateLists(rsvp)
   ulContainer.insertAdjacentHTML('beforeend', t)
 }
