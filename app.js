@@ -51,15 +51,14 @@ const bindEventChange = function() {
   bindEvent(ul,'click','button',function() {
     const listItem = this.parentNode
     const action = this.textContent
-    const index = indexOfElement(listItem)
     const nameActions = {
       Remove: ()=> {
         listItem.remove()
-        rsvpLists.splice(index, 1)
         saveLists()
       },
 
       Edit: ()=> {
+        log('Edit')
         const span = listItem.firstElementChild
         const name = span.textContent
         span.insertAdjacentHTML('beforebegin', `
@@ -69,13 +68,13 @@ const bindEventChange = function() {
       },
 
       Save: ()=> {
+        log('Save')
         const input = listItem.firstElementChild
         const name = input.value
         input.insertAdjacentHTML('beforebegin', `
-          <span>${name}</span>`)
+          <span class="rsvp-name">${name}</span>`)
         input.remove()
         this.textContent = 'Edit'
-        rsvpLists[index].name = name
         saveLists()
       }
     }
@@ -89,9 +88,8 @@ const bindEventConfirm = function() {
   const ul = e('#id-ul-invitedList')
   bindEvent(ul,'change','input',function() {
     if (this.className === 'confirm') {
-      log("This is listItem",this.className)
+      log("This is listItem:",this.className)
       const listItem = this.parentNode.parentNode
-      const index = indexOfElement(listItem)
       if (this.checked) {
         listItem.className = "responded"
         saveLists()
@@ -186,7 +184,7 @@ const insertList = function(name, status) {
   ulContainer.insertAdjacentHTML('beforeend', t)
 }
 
-// return index of element
+// // return index of element
 const indexOfElement = function(elem) {
   const parent = elem.parentElement
   for (let i = 0; i < parent.children.length; i++) {
@@ -208,10 +206,12 @@ const load = function() {
   return JSON.parse(r)
 }
 
+// save lists to localStorage
 const saveLists = function() {
   log('Start to saveLists')
   // create empty array
   var rsvp = []
+  log('rsvp: ', rsvp)
   const names = document.querySelectorAll('.rsvp-name');
   for (let i = 0; i < names.length; i++) {
     let name = names[i].innerHTML
@@ -225,6 +225,7 @@ const saveLists = function() {
   save(rsvp)
 }
 
+// load lists from localStorage
 const loadLists = function() {
   log('Start to loadLists')
   const rsvp = load()
