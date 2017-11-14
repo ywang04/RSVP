@@ -94,13 +94,9 @@ const bindEventConfirm = function() {
       const index = indexOfElement(listItem)
       if (this.checked) {
         listItem.className = "responded"
-        rsvpLists[index].confirmed = true
-        log(rsvpLists[index], index)
         saveLists()
       } else {
         listItem.className = ""
-        rsvpLists[index].confirmed = false
-        log(rsvpLists[index], index)
         saveLists()
       }
     }
