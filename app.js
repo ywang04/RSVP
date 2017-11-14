@@ -184,16 +184,6 @@ const insertList = function(name, status) {
   ulContainer.insertAdjacentHTML('beforeend', t)
 }
 
-// // return index of element
-const indexOfElement = function(elem) {
-  const parent = elem.parentElement
-  for (let i = 0; i < parent.children.length; i++) {
-    if (parent.children[i] === elem) {
-      return i
-    }
-  }
-}
-
 // serialize array to string
 const save = function(array) {
   const r = JSON.stringify(array)
