@@ -210,14 +210,15 @@ const load = function() {
 
 const saveLists = function() {
   log('Start to saveLists')
+  // create empty array
   var rsvp = []
   const names = document.querySelectorAll('.rsvp-name');
   for (let i = 0; i < names.length; i++) {
     let name = names[i].innerHTML
-    let confirm = names[i].parentElement.classList.contains('responded');
+    let status = names[i].parentElement.classList.contains('responded');
     let person = {
       name: name,
-      status: confirm
+      status: status
     }
     rsvp.push(person)
   }
@@ -225,16 +226,14 @@ const saveLists = function() {
 }
 
 const loadLists = function() {
+  log('Start to loadLists')
+  const rsvp = load()
+  for (let i = 0; i < rsvp.length; i++) {
+    let name = rsvp[i].name
+    let status = rsvp[i].status
+    insertList(name, status)
+  }
 }
-
-// initial lists
-// const initLists = function() {
-//   rsvpLists = loadLists()
-//   for (let i = 0; i < rsvpLists.length; i++) {
-//     let list = rsvpLists[i]
-//     insertList(list)
-//   }
-// }
 
 const bindEvents = function() {
   bindEventAdd()
@@ -247,7 +246,7 @@ const __main = function() {
   log("Main to start")
   insertLable()
   bindEvents()
-  // initLists()
+  loadLists()
 }
 
 __main()
