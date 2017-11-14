@@ -29,20 +29,15 @@ const bindEvent = function(elem,eventType,selector,fn) {
 
 // click Add button to add name
 const bindEventAdd = function() {
-  log('bindEventAdd')
+  log('Start to bindEventAdd')
   const form = e('#id-form-registrar')
   const inputForm = form.querySelector('input')
   bindEvent(form,'submit',function(event) {
     event.preventDefault()
     let name = inputForm.value
     if (name) {
-      const rsvp = {
-        name: name,
-        confirmed: false
-      }
       inputForm.value = ''
-      insertList(rsvp)
-      rsvpLists.push(rsvp)
+      insertList(name, false)
     } else {
       alert("Please enter your name.")
     }
@@ -154,32 +149,44 @@ const templateLabel = function() {
 }
 
 // templates of list
-const templateLists = function(rsvp) {
+const templateLists = function(name, status) {
   log("Start to templateLists")
-  const t = `
-        <li class="responded">
-          <span class='rsvp-name'>${rsvp.name}</span>
-          <label>Confirmed<input class="confirm" type="checkbox" checked=""></label>
-          <button>Edit</button>
-          <button>Remove</button>
-        </li>
-  `
-  return t
+  if (status) {
+    const t = `
+      <li class="responded">
+        <span class="rsvp-name">${name}</span>
+        <label>Confirmed<input class="confirm" type="checkbox" checked=""></label>
+        <button>Edit</button>
+        <button>Remove</button>
+      </li>
+    `
+    return t
+  } else {
+    const t = `
+      <li>
+        <span class="rsvp-name">${name}</span>
+        <label>Confirmed<input class="confirm" type="checkbox"></label>
+        <button>Edit</button>
+        <button>Remove</button>
+      </li>
+    `
+    return t
+  }
 }
 
 // insert label to mainDiv
 const insertLable = function() {
-  log("Start to insert")
+  log("Insert label")
   const header = e('.title');
   const t = templateLabel()
   header.insertAdjacentHTML("afterend",t)
 }
 
 // insert list to ul
-const insertList = function(rsvp) {
+const insertList = function(name, status) {
   log("Start to insert list")
   const ulContainer = e('#id-ul-invitedList')
-  const t = templateLists(rsvp)
+  const t = templateLists(name, status)
   ulContainer.insertAdjacentHTML('beforeend', t)
 }
 
@@ -206,11 +213,17 @@ const load = function() {
 }
 
 const saveLists = function() {
+  log('Start to saveLists')
   var rsvp = []
   const names = document.querySelectorAll('.rsvp-name');
-  for (var i = 0; i < names.length; i++) {
-    let name = names[i]
-    rsvp.push(name)
+  for (let i = 0; i < names.length; i++) {
+    let name = names[i].innerHTML
+    let confirm = names[i].parentElement.classList.contains('responded');
+    let person = {
+      name: name,
+      status: confirm
+    }
+    rsvp.push(person)
   }
   save(rsvp)
 }
