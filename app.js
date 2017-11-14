@@ -156,27 +156,15 @@ const templateLabel = function() {
 // templates of list
 const templateLists = function(rsvp) {
   log("Start to templateLists")
-  if (rsvp.confirmed) {
-    const t = `
-          <li class="responded">
-            <span>${rsvp.name}</span>
-            <label>Confirmed<input class="confirm" type="checkbox" checked=""></label>
-            <button>Edit</button>
-            <button>Remove</button>
-          </li>
-    `
-    return t
-  } else {
-    const t = `
-          <li>
-            <span>${rsvp.name}</span>
-            <label>Confirmed<input class="confirm" type="checkbox"></label>
-            <button>Edit</button>
-            <button>Remove</button>
-          </li>
-    `
-    return t
-  }
+  const t = `
+        <li class="responded">
+          <span class='rsvp-name'>${rsvp.name}</span>
+          <label>Confirmed<input class="confirm" type="checkbox" checked=""></label>
+          <button>Edit</button>
+          <button>Remove</button>
+        </li>
+  `
+  return t
 }
 
 // insert label to mainDiv
@@ -205,32 +193,39 @@ const indexOfElement = function(elem) {
   }
 }
 
-// save lists to localStorage
-const save = function(rsvp) {
-  const r = JSON.stringify(rsvp)
+// serialize array to string
+const save = function(array) {
+  const r = JSON.stringify(array)
   localStorage.rsvpLists = r
 }
 
-// load lists from localStorage
+// unserialize string to array
 const load = function() {
   const r = localStorage.rsvpLists
   return JSON.parse(r)
 }
 
 const saveLists = function() {
+  var rsvp = []
+  const names = document.querySelectorAll('.rsvp-name');
+  for (var i = 0; i < names.length; i++) {
+    let name = names[i]
+    rsvp.push(name)
+  }
+  save(rsvp)
 }
 
 const loadLists = function() {
 }
 
 // initial lists
-const initLists = function() {
-  rsvpLists = loadLists()
-  for (let i = 0; i < rsvpLists.length; i++) {
-    let list = rsvpLists[i]
-    insertList(list)
-  }
-}
+// const initLists = function() {
+//   rsvpLists = loadLists()
+//   for (let i = 0; i < rsvpLists.length; i++) {
+//     let list = rsvpLists[i]
+//     insertList(list)
+//   }
+// }
 
 const bindEvents = function() {
   bindEventAdd()
@@ -243,7 +238,7 @@ const __main = function() {
   log("Main to start")
   insertLable()
   bindEvents()
-  initLists()
+  // initLists()
 }
 
 __main()
