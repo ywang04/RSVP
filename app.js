@@ -22,7 +22,7 @@ const bindEvent = function(elem,eventType,selector,fn) {
         fn.call(target,event)
       }
     } else {
-      fn(event)
+      fn(event)  //without event delegation
     }
   })
 }
