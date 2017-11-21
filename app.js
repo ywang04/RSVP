@@ -3,7 +3,7 @@ const log = function() {
   console.log.apply(console, arguments)
 }
 
-// use function e replace document.querySelector
+// use function e to replace document.querySelector
 const e = function(selector) {
   return document.querySelector(selector)
 }
@@ -19,7 +19,7 @@ const bindEvent = function(elem,eventType,selector,fn) {
     if (selector) {
       const target = event.target
       if (target.matches(selector)) {
-        fn.call(target,event)
+        fn.call(target)
       }
     } else {
       fn(event)  //without event delegation
