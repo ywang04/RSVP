@@ -8,6 +8,11 @@ const e = function(selector) {
   return document.querySelector(selector)
 }
 
+// append HTML to page
+const appendHtml = function(element, html) {
+  element.insertAdjacentHTML('beforeend', html)
+}
+
 // bindEvent
 const bindEvent = function(elem,eventType,selector,fn) {
   if (fn == null) {
@@ -181,7 +186,7 @@ const insertList = function(name, status) {
   log("Start to insert list")
   const ulContainer = e('#id-ul-invitedList')
   const t = templateLists(name, status)
-  ulContainer.insertAdjacentHTML('beforeend', t)
+  appendHtml(ulContainer, t)
 }
 
 // serialize array to string
