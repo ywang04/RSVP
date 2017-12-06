@@ -14,9 +14,9 @@ const appendHtml = function(element, html) {
 }
 
 // bindEvent
-const bindEvent = function(elem,eventType,selector,fn) {
-  if (fn == null) {
-    fn = selector
+const bindEvent = function(elem,eventType,selector,callback) {
+  if (callback == null) {
+    callback = selector
     selector = null
   }
   elem.addEventListener(eventType,function(event) {
@@ -24,10 +24,10 @@ const bindEvent = function(elem,eventType,selector,fn) {
     if (selector) {
       const target = event.target
       if (target.matches(selector)) {
-        fn.call(target)
+        callback.call(target)
       }
     } else {
-      fn(event)  //without event delegation
+      callback(event)  //without event delegation
     }
   })
 }
@@ -53,6 +53,7 @@ const bindEventAdd = function() {
 // click Edit/Save/Remove button to modify name
 const bindEventChange = function() {
   const ul = e('#id-ul-invitedList')
+  // button is the selector that truly triggers the event
   bindEvent(ul,'click','button',function() {
     const listItem = this.parentNode
     const action = this.textContent
@@ -206,7 +207,6 @@ const saveLists = function() {
   log('Start to saveLists')
   // create empty array
   var rsvp = []
-  log('rsvp: ', rsvp)
   const names = document.querySelectorAll('.rsvp-name');
   for (let i = 0; i < names.length; i++) {
     let name = names[i].innerHTML
@@ -217,6 +217,7 @@ const saveLists = function() {
     }
     rsvp.push(person)
   }
+  log('rsvp: ', rsvp)
   save(rsvp)
 }
 
