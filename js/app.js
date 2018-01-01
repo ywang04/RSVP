@@ -15,7 +15,7 @@ const appendHtml = function(element, html) {
 
 // bindEvent
 const bindEvent = function(elem,eventType,selector,callback) {
-  if (callback == null) {
+  if (callback === undefined) {
     callback = selector
     selector = null
   }
