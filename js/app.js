@@ -20,14 +20,13 @@ const bindEvent = function(elem,eventType,selector,callback) {
     selector = null
   }
   elem.addEventListener(eventType,function(event) {
-    //use event delegation
     if (selector) {
       const target = event.target
       if (target.matches(selector)) {
         callback.call(target)
       }
     } else {
-      callback(event)  //without event delegation
+      callback(event)
     }
   })
 }
