@@ -34,7 +34,6 @@ const bindEvent = function(elem,eventType,selector,callback) {
 
 // click Add button to add name
 const bindEventAdd = function() {
-  log('Start to bindEventAdd')
   const form = e('#id-form-registrar')
   const inputForm = form.querySelector('input')
   bindEvent(form,'submit',function(event) {
@@ -64,7 +63,6 @@ const bindEventChange = function() {
       },
 
       Edit: ()=> {
-        log('Edit')
         const span = listItem.firstElementChild
         const name = span.textContent
         span.insertAdjacentHTML('beforebegin', `
@@ -74,7 +72,6 @@ const bindEventChange = function() {
       },
 
       Save: ()=> {
-        log('Save')
         const input = listItem.firstElementChild
         const name = input.value
         input.insertAdjacentHTML('beforebegin', `
@@ -90,11 +87,9 @@ const bindEventChange = function() {
 
 // click checkbox to confirm
 const bindEventConfirm = function() {
-  log('Start to Confirm')
   const ul = e('#id-ul-invitedList')
   bindEvent(ul,'change','input',function() {
     if (this.className === 'confirm') {
-      log("This is listItem:",this.className)
       const listItem = this.parentNode.parentNode
       if (this.checked) {
         listItem.className = "responded"
@@ -111,7 +106,6 @@ const bindEventConfirm = function() {
 const bindEventFilter = function() {
   const filterCheckbox = e('.respond')
   bindEvent(filterCheckbox,'change',function(event) {
-    log("Start to filter")
     const ul = e('#id-ul-invitedList')
     const listItem = ul.children
     const isChecked = event.target.checked
@@ -150,7 +144,6 @@ const templateLabel = function() {
 
 // templates of list
 const templateLists = function(name, status) {
-  log("Start to templateLists")
   if (status) {
     const t = `
       <li class="responded">
@@ -176,7 +169,6 @@ const templateLists = function(name, status) {
 
 // insert label to mainDiv
 const insertLable = function() {
-  log("Insert label")
   const header = e('.title');
   const t = templateLabel()
   header.insertAdjacentHTML("afterend",t)
@@ -184,7 +176,6 @@ const insertLable = function() {
 
 // insert list to ul
 const insertList = function(name, status) {
-  log("Start to insert list")
   const ulContainer = e('#id-ul-invitedList')
   const t = templateLists(name, status)
   appendHtml(ulContainer, t)
@@ -204,7 +195,6 @@ const load = function() {
 
 // save lists to localStorage
 const saveLists = function() {
-  log('Start to saveLists')
   // create empty array
   var rsvp = []
   const names = document.querySelectorAll('.rsvp-name');
@@ -217,13 +207,11 @@ const saveLists = function() {
     }
     rsvp.push(person)
   }
-  log('rsvp: ', rsvp)
   save(rsvp)
 }
 
 // load lists from localStorage
 const loadLists = function() {
-  log('Start to loadLists')
   const rsvp = load()
   for (let i = 0; i < rsvp.length; i++) {
     let name = rsvp[i].name
@@ -240,7 +228,6 @@ const bindEvents = function() {
 }
 
 const __main = function() {
-  log("Main to start")
   insertLable()
   loadLists()
   bindEvents()
