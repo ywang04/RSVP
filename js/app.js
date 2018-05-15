@@ -188,7 +188,7 @@ const save = function(array) {
 
 // unserialize string to array
 const load = function() {
-  const r = localStorage.rsvpLists
+  const r = localStorage.rsvpLists || '[]'
   return JSON.parse(r)
 }
 
